@@ -7,7 +7,7 @@ Find all the food recipes  you would like by different chefs ;-)
 **Start app**
 Go to foodtofork.com and get an api key then, this requires you to create an account.
 Navigate to the project's root folder and into src folder and inside the src navigate to the configjs file and paste or write your given key to the key variable.
-Run nodemon on your command line and the app should initiate by itself and on the browser by launching local host with suggested port.
+Run start on your command line and the app should initiate by itself and on the browser by launching local host with suggested port.
 Search any  kind of food into the search bar and everything would load gradually.
 It would be better if you had a code editor eg
 
