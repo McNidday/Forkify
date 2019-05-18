@@ -1,1 +1,1 @@
-export const key = '35747aa0c389cd1bf2108f4500df2b31';
+export const key = 'Your key goes here';
