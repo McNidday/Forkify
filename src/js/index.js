@@ -19,26 +19,24 @@ const state = {}
 const controlSearch = async () => {
     // Get the query fromm the view
     const query = searchView.getInput(); // TODO
-    if (query){
+    if (query) {
         // New search object and add to state
         state.Search = new Search(query);
         // Prepare the UI for results
         searchView.clearInput();
         searchView.clearResults();
         renderTheLoader(elements.searchRes);
-        try{
+        try {
             // Search for recipes
             await state.Search.getResults();
 
             // Render results on UI
             clearLoader();
             searchView.renderResults(state.Search.recipes);
-
-        } catch(error){
+        } catch (error) {
             alert(`Something went wrong`);
             clearLoader();
         }
-        
     }
 }
 
@@ -58,12 +56,12 @@ elements.searchForm.addEventListener("submit", e => {
 
 elements.searchResPages.addEventListener("click", e => {
     const btn = e.target.closest('.btn-inline');
-    if (btn){
+    if (btn) {
         const goToPage = parseInt(btn.dataset.goto);
         searchView.clearResults();
         searchView.renderResults(state.Search.recipes, goToPage);
     }
-    
+
 });
 
 // Reciepe Controller
@@ -71,16 +69,15 @@ const controlReciepe = async () => {
     // Get id from url
     const id = window.location.hash.replace('#', '');
 
-    if(id){
-
+    if (id) {
         // Prepare ui for changes
         reciepeView.clearReciepe();
         renderTheLoader(elements.reciepe);
 
         //Highlight Selected search item
-        if(state.Search)searchView.highlightSelected(id);
+        if (state.Search) searchView.highlightSelected(id);
 
-        try{
+        try {
 
             // Create new reciepe
             state.reciepe = new Reciepe(id);
@@ -93,13 +90,13 @@ const controlReciepe = async () => {
             // Render the recipe
             clearLoader();
             reciepeView.renderReciepe(state.reciepe, state.likes.isLiked(id));
-            
+
 
         } catch (error) {
             console.log(error);
             alert(`Something went wrong!`);
         }
-        
+
     }
 }
 // window.addEventListener('hashchange', controlReciepe);
@@ -131,7 +128,7 @@ elements.shopping.addEventListener('click', e => {
         // Delete from UI
         listView.deleteItem(id);
 
-    // Handle the count update
+        // Handle the count update
     } else if (e.target.matches('.shopping__count-value')) {
         const val = parseFloat(e.target.value, 10);
         state.list.updateCount(id, val);
@@ -160,7 +157,7 @@ const controlLike = () => {
         // Add like to UI list
         likesView.renderTheLike(newLike);
 
-    // User HAS liked current recipe
+        // User HAS liked current recipe
     } else {
         // Remove like from the state
         state.likes.deleteLike(currentID);
@@ -189,20 +186,20 @@ window.addEventListener('load', () => {
 });
 
 elements.reciepe.addEventListener('click', e => {
-    if (e.target.matches('.btn-decrease, .btn-decrease *')){
+    if (e.target.matches('.btn-decrease, .btn-decrease *')) {
         // Decrease button is clicked
-        if(state.reciepe.servings > 1){
+        if (state.reciepe.servings > 1) {
             state.reciepe.updateServings('dec');
             reciepeView.updateServingsIngredients(state.reciepe);
         }
-    } else if (e.target.matches('.btn-increase, .btn-increase *')){
+    } else if (e.target.matches('.btn-increase, .btn-increase *')) {
         // Increase button is clicked
         state.reciepe.updateServings('inc');
         reciepeView.updateServingsIngredients(state.reciepe);
-    } else if (e.target.matches('.recipe__btn--add, .recipe__btn--add *')){
+    } else if (e.target.matches('.recipe__btn--add, .recipe__btn--add *')) {
         clearList();
         controlList();
-    } else if(e.target.matches('.recipe__love, .recipe__love *')){
+    } else if (e.target.matches('.recipe__love, .recipe__love *')) {
         // Call the likesController
         controlLike();
     }

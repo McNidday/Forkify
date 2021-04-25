@@ -19,9 +19,9 @@ export const highlightSelected = id => {
 
 export const limitReciepeTitle = (title, limit = 17) => {
     const newTitle = [];
-    if (title.length > limit){
+    if (title.length > limit) {
         title.split(' ').reduce((acc, curr) => {
-            if (acc + curr.length <= limit){
+            if (acc + curr.length <= limit) {
                 newTitle.push(curr);
             }
             return acc + curr.length;
@@ -29,36 +29,34 @@ export const limitReciepeTitle = (title, limit = 17) => {
 
         // Return the result
         return `${newTitle.join(' ')}...`;
-    } 
+    }
     return title;
 }
 
 const renderRecipe = recipe => {
     const markup = `
                 <li>
-                    <a class="results__link" href="#${recipe.recipe_id}">
+                    <a class="results__link" href="#${recipe.id}">
                         <figure class="results__fig">
-                            <img src="${recipe.image_url}" alt="${recipe.title}">
+                            <img src="${recipe.image}" alt="${recipe.title}">
                         </figure>
                         <div class="results__data">
                             <h4 class="results__name">${limitReciepeTitle(recipe.title)}</h4>
-                            <p class="results__author">${recipe.publisher}</p>
+                            <p class="results__author">Spoonacular</p>
                         </div>
                     </a>
                 </li>
-
     `;
-
     elements.searchrResList.insertAdjacentHTML('beforeend', markup);
 };
 
 const createButton = (page, type) => `
 
-<button class="btn-inline results__btn--${type}" data-goto=${type === 'prev'? page - 1 : page + 1}>
+<button class="btn-inline results__btn--${type}" data-goto=${type === 'prev' ? page - 1 : page + 1}>
     <svg class="search__icon">
-        <use href="img/icons.svg#icon-triangle-${type === 'prev'? 'left' : 'right'}"></use>
+        <use href="img/icons.svg#icon-triangle-${type === 'prev' ? 'left' : 'right'}"></use>
     </svg>
-    <span>Page ${type === 'prev'? page - 1 : page + 1}</span>
+    <span>Page ${type === 'prev' ? page - 1 : page + 1}</span>
 </button>
 `;
 const renderButtons = (page, numRes, resPerPage) => {
@@ -66,16 +64,16 @@ const renderButtons = (page, numRes, resPerPage) => {
 
     let button;
 
-    if(page === 1 && pages > 1){
+    if (page === 1 && pages > 1) {
         // Only Button to go to the next page
         button = createButton(page, 'next');
-    } else if(page < pages){
+    } else if (page < pages) {
         // Both buttons
         button = `
             ${createButton(page, 'prev')};
             ${createButton(page, 'next')};
         `;
-    } else if (page === pages && pages > 1){
+    } else if (page === pages && pages > 1) {
         // Only Button to go to previous page
         button = createButton(page, 'prev');
     }
@@ -85,7 +83,7 @@ const renderButtons = (page, numRes, resPerPage) => {
 
 export const renderResults = (recipes, page = 1, resPerPage = 10) => {
     const start = (page - 1) * resPerPage;
-    const end = page *  resPerPage;
+    const end = page * resPerPage;
     recipes.slice(start, end).forEach(renderRecipe);
 
     renderButtons(page, recipes.length, resPerPage);
