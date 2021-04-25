@@ -6,4 +6,4 @@
 
 ## 😇 How To ?
 
-- Go to https://mcforkify.herokuapp.com search for any recipe you like and wallah enjoy :)
+- Go to https://https://kefafork.netlify.app search for any recipe you like and wallah enjoy :)
