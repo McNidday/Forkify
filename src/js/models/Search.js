@@ -7,7 +7,7 @@ export default class Search {
   async getResults() {
     try {
       const res = await Axios(
-        `https://api.spoonacular.com/recipes/complexSearch?apiKey=${key}&query=${this.query}`
+        `https://api.spoonacular.com/recipes/complexSearch?apiKey=${key}&query=${this.query}&number=100`
       );
       this.recipes = res.data.results;
     } catch (error) {

@@ -55,7 +55,6 @@ const renderRecipe = (recipe) => {
 };
 
 const createButton = (page, type) => `
-
 <button class="btn-inline results__btn--${type}" data-goto=${
   type === "prev" ? page - 1 : page + 1
 }>
@@ -67,9 +66,9 @@ const createButton = (page, type) => `
     <span>Page ${type === "prev" ? page - 1 : page + 1}</span>
 </button>
 `;
+
 const renderButtons = (page, numRes, resPerPage) => {
   const pages = Math.ceil(numRes / resPerPage);
-
   let button;
 
   if (page === 1 && pages > 1) {
@@ -86,7 +85,7 @@ const renderButtons = (page, numRes, resPerPage) => {
     button = createButton(page, "prev");
   }
 
-  elements.searchResPages.insertAdjacentHTML("afterbegin", button);
+  if (button) elements.searchResPages.insertAdjacentHTML("afterbegin", button);
 };
 
 export const renderResults = (recipes, page = 1, resPerPage = 10) => {
