@@ -1,5 +1,10 @@
 import { elements } from "./base";
 
+export const renderNoItem = () => {
+  const markup = `<li class="no-shopping__item"><p>No item in shopping list</p></li>`;
+  elements.shopping.insertAdjacentHTML("beforeend", markup);
+};
+
 export const renderItem = (item) => {
   const markup = `
         <li class="shopping__item" data-itemid=${item.id}>
@@ -10,7 +15,7 @@ export const renderItem = (item) => {
             <p class="shopping__description">${item.ingredient}</p>
             <button class="shopping__delete btn-tiny">
                 <svg>
-                    <use href="img/icons.svg#icon-circle-with-cross"></use>
+                    <use href="img/load.svg#icon-circle-with-cross"></use>
                 </svg>
             </button>
         </li>

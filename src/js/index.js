@@ -8,7 +8,7 @@ import {
   clearLoader,
   clearList,
 } from "./views/base";
-// mport { renderReciepe, clearReciepe, updateServingsIngredients } from './views/reciepeView';
+// import { renderReciepe, clearReciepe, updateServingsIngredients } from './views/reciepeView';
 import * as reciepeView from "./views/reciepeView";
 import * as listView from "./views/listView";
 import Likes from "./models/Likes";
@@ -24,38 +24,26 @@ const state = {};
 const controlSearch = async () => {
   // Get the query fromm the view
   const query = searchView.getInput(); // TODO
-  if (query) {
-    // New search object and add to state
-    state.Search = new Search(query);
-    // Prepare the UI for results
-    searchView.clearInput();
-    searchView.clearResults();
-    renderTheLoader(elements.searchRes);
-    try {
-      // Search for recipes
-      await state.Search.getResults();
+  // New search object and add to state
+  state.Search = new Search(query);
+  // Prepare the UI for results
+  searchView.clearInput();
+  searchView.clearResults();
+  renderTheLoader(elements.searchRes);
 
-      // Render results on UI
-      clearLoader();
-      searchView.renderResults(state.Search.recipes);
-    } catch (error) {
-      alert(`Something went wrong`);
-      clearLoader();
-    }
+  try {
+    // Search for recipes
+    query === "" || !query
+      ? await state.Search.getRandomResults()
+      : await state.Search.getResults();
+    // Render results on UI
+    clearLoader();
+    searchView.renderResults(state.Search.recipes ? state.Search.recipes : []);
+  } catch (error) {
+    alert(`Something went wrong`);
+    clearLoader();
   }
 };
-
-elements.searchForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  controlSearch();
-});
-
-// window.addEventListener("load", e => {
-
-//     e.preventDefault();
-//     controlSearch();
-
-// })
 
 elements.searchResPages.addEventListener("click", (e) => {
   const btn = e.target.closest(".btn-inline");
@@ -68,6 +56,7 @@ elements.searchResPages.addEventListener("click", (e) => {
 
 // Reciepe Controller
 const controlReciepe = async () => {
+  if (!state.list) listView.renderNoItem();
   // Get id from url
   const id = window.location.hash.replace("#", "");
 
@@ -97,12 +86,29 @@ const controlReciepe = async () => {
     }
   }
 };
-// window.addEventListener('hashchange', controlReciepe);
-// window.addEventListener('load', controlReciepe);
 
-["hashchange", "load"].forEach((event) =>
-  window.addEventListener(event, controlReciepe)
-);
+["hashchange", "load"].forEach((event) => {
+  if (event === "load") {
+    window.addEventListener(event, () => {
+      console.log("Events loaded admmit!");
+      controlSearch();
+      controlReciepe();
+
+      // Resore the likes
+      state.likes = new Likes();
+
+      state.likes.readStorage();
+
+      likesView.toggleLikeMenu(state.likes.getNumLikes());
+
+      state.likes.Likes.forEach((like) => {
+        likesView.renderTheLike(like);
+      });
+    });
+  } else {
+    window.addEventListener(event, controlReciepe);
+  }
+});
 
 // Handling recipe button click
 const controlList = () => {
@@ -127,6 +133,9 @@ elements.shopping.addEventListener("click", (e) => {
 
     // Delete from UI
     listView.deleteItem(id);
+
+    // Show no list item if empty
+    if (!state.list || state.list.items.length <= 0) listView.renderNoItem();
 
     // Handle the count update
   } else if (e.target.matches(".shopping__count-value")) {
@@ -172,17 +181,7 @@ const controlLike = () => {
 };
 
 // Restore Liked recipes on page load
-window.addEventListener("load", () => {
-  state.likes = new Likes();
-
-  state.likes.readStorage();
-
-  likesView.toggleLikeMenu(state.likes.getNumLikes());
-
-  state.likes.Likes.forEach((like) => {
-    likesView.renderTheLike(like);
-  });
-});
+window.addEventListener("load", () => {});
 
 elements.reciepe.addEventListener("click", (e) => {
   if (e.target.matches(".btn-decrease, .btn-decrease *")) {

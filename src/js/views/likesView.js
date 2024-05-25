@@ -2,11 +2,11 @@ import { elements } from "./base";
 import { limitReciepeTitle } from "./searchView";
 
 export const toggleLikeBtn = (isLiked) => {
-  // img/icons.svg#icon-heart-outlined
+  // img/load.svg#icon-heart-outlined
   const iconString = isLiked ? "icon-heart" : "icon-heart-outlined";
   document
     .querySelector(".recipe__love use")
-    .setAttribute("href", `img/icons.svg#${iconString}`);
+    .setAttribute("href", `img/load.svg#${iconString}`);
 };
 
 export const toggleLikeMenu = (numLikes) => {
@@ -31,7 +31,8 @@ export const renderTheLike = (like) => {
 };
 
 export const deleteTheLike = (id) => {
-  const el = document.querySelector(`.likes__link[href*="${id}"]`)
-    .parentElement;
+  const el = document.querySelector(
+    `.likes__link[href*="${id}"]`
+  ).parentElement;
   if (el) el.parentElement.removeChild(el);
 };

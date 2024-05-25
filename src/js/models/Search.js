@@ -14,4 +14,16 @@ export default class Search {
       alert(error);
     }
   }
+
+  async getRandomResults() {
+    try {
+      const res = await Axios(
+        `https://api.spoonacular.com/recipes/random?number=100`
+      );
+      console.log(res);
+      this.recipes = res.data.results;
+    } catch (error) {
+      alert(error);
+    }
+  }
 }

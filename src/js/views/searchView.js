@@ -59,7 +59,7 @@ const createButton = (page, type) => `
   type === "prev" ? page - 1 : page + 1
 }>
     <svg class="search__icon">
-        <use href="img/icons.svg#icon-triangle-${
+        <use href="img/load.svg#icon-triangle-${
           type === "prev" ? "left" : "right"
         }"></use>
     </svg>
@@ -92,6 +92,5 @@ export const renderResults = (recipes, page = 1, resPerPage = 10) => {
   const start = (page - 1) * resPerPage;
   const end = page * resPerPage;
   recipes.slice(start, end).forEach(renderRecipe);
-
   renderButtons(page, recipes.length, resPerPage);
 };
